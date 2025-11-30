@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from dataset import load_data
 from model import ResNet50Binary
 import os
-
+from FocalLoss import FocalLoss
 
 def train_model():
     train_loader, test_loader = load_data(batch_size=8)
@@ -12,7 +12,9 @@ def train_model():
 
 
     model = ResNet50Binary().to(device)
-    criterion = torch.nn.CrossEntropyLoss()
+    # 假设 normal=0, disease=1
+    criterion = FocalLoss(alpha=2.0, gamma=2).to(device)
+
     optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
 
